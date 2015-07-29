@@ -6,6 +6,7 @@ buildscript {
     dependencies {
         classpath "io.ratpack:ratpack-gradle:0.9.19-SNAPSHOT"
         classpath "com.github.jengelman.gradle.plugins:shadow:1.2.2"
+        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.4.0"
     }
 }
 
@@ -13,9 +14,17 @@ apply plugin: "io.ratpack.ratpack-groovy"
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: "idea"
 apply plugin: "eclipse"
+apply plugin: 'asset-pipeline'
+
+
+assets {
+    compileDir = "$buildDir/resources/main/assets"
+}
+
 
 repositories {
     jcenter()
+    // mavenLocal()
     maven { url "https://oss.jfrog.org/repo" }
 }
 
@@ -27,6 +36,8 @@ dependencies {
     // Default SLF4J binding.  Note that this is a blocking implementation.
     // See here for a non blocking appender http://logging.apache.org/log4j/2.x/manual/async.html
     runtime 'org.slf4j:slf4j-simple:1.7.7'
-
+    compile "com.bertramlabs.plugins:ratpack-asset-pipeline:2.4.0"
     testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
 }
+
+test.dependsOn assetCompile
